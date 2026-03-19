@@ -1,0 +1,24 @@
+1. Allow firewall access
+source: 172.16.18.10
+Destination: 172.16.21.1 (IP firewall)
+Port 443 (HTTPS)
+Ý nghĩa: Cho phép máy 172.16.18.10 truy cập giao diện quản trị firewall qua HTTPS, chỉ cho phép 1 IP cụ thể được phép quản lý firewall
+2. Block firewall access
+source: * (tất cả)
+Des:  172.16.21.1 (IP firewall)
+Ý nghĩa: chặn mọi truy cập khác đến firewall. Khi viết rule 1 trước rule 2 sau thì ngoại trừ máy có IP ở rule 1 thì không máy nào được phép truy cập firewall
+3. Allow internal server access
+rule 1: DNS
+source: 172.16.21.0/24
+Des: 192.168.1.10
+Port: 53(DNS)
+=> Cho phép các máy trong mạng lan truy vấn DNS
+rule 2: DHCP
+Source: 172.16.21.0/24(mạng lan)
+Des: 192.168.1.11
+Port: 67(DHCP)
+=> cho phép các máy trong mạng lan cấp phát IP qua DHCP
+4. Block everything else
+source: LAN net
+Des: *
+=> Default deny rule: nếu không match rule phía trên thì sẽ bị chặn hết. Nguyên tắc allow cái cần block các cái còn lại
