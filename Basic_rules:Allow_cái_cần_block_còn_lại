@@ -18,7 +18,24 @@ Source: 172.16.21.0/24(mạng lan)
 Des: 192.168.1.11
 Port: 67(DHCP)
 => cho phép các máy trong mạng lan cấp phát IP qua DHCP
-4. Block everything else
+4. Block access to reserved IPs
+source: *
+Des: reservedIPs
+=> chặn tất cả các IP truy cập đến IP private (10.x, 192.168.x...) loopback (127.0.0.1) link local. Tránh truy cập sai mạng, tăng tính bảo mật
+5. Ignore broadcast and multicast
+source: *
+Des: IgnoredIPs
+=> không xử lý broadcast và multicast, nhằm giảm tải firewall tránh log rác
+6. Allow Internet access
+HTTPS (443)
+Source: 172.16.21.0/24
+Destination: any
+=>Cho phép truy cập web bảo mật
+HTTP (80)
+Source: 172.16.21.0/24
+Destination: any
+=> Cho phép web thường
+7. Block everything else
 source: LAN net
 Des: *
 => Default deny rule: nếu không match rule phía trên thì sẽ bị chặn hết. Nguyên tắc allow cái cần block các cái còn lại
